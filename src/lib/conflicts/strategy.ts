@@ -1,13 +1,17 @@
 import { ConflictResolutionStrategy } from '../ConflictResolutionStrategy';
 import { Match } from '../Match';
+import { Session } from '../Session';
 import { activationRecency } from './activationRecency';
 import { bucketCounter } from './bucketCounter';
 import { factRecency } from './factRecency';
 import { salience } from './salience';
 
-
-export function strategy<T>(strategyNames: string[]): (a: Match<T>, b: Match<T>) => number {
-    const strategies: { [name: string]: ConflictResolutionStrategy<T> } = {
+/**
+ * Creates a ConflictResolutionStrategy based upon the names of some standard strategies.
+ * @param strategyNames The names of the strategies to be used.
+ */
+export function strategy<T, S extends Session<T>>(strategyNames: ('salience' | 'activationRecency' | 'bucketCounter' | 'factRecency')[]): (a: Match<T, S>, b: Match<T, S>) => number {
+    const strategies: { [name: string]: ConflictResolutionStrategy<T, S> } = {
         salience: salience,
         bucketCounter: bucketCounter,
         factRecency: factRecency,
@@ -18,7 +22,7 @@ export function strategy<T>(strategyNames: string[]): (a: Match<T>, b: Match<T>)
     });
     const stratsLength = strats.length;
 
-    return function (a: Match<T>, b: Match<T>) {
+    return function (a: Match<T, S>, b: Match<T, S>) {
         let i = -1;
         let ret = 0;
         const equal = a === b || (a.name === b.name && a.hashCode === b.hashCode);

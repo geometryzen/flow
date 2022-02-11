@@ -3,7 +3,7 @@ import { Flow } from './Flow';
 import { RootNode } from './nodes/RootNode';
 
 /**
- *
+ * Used by the Flow implementation of Session.
  */
 export class ExecutionStrategy<T> {
     flow: Flow<T>;
@@ -17,10 +17,10 @@ export class ExecutionStrategy<T> {
     private modifyHandler?: () => void;
     private retractHandler?: () => void;
     private errorCallback?: (reason: unknown) => void;
-    constructor(flow: Flow<T>, matchUnitilHalt?: boolean) {
+    constructor(flow: Flow<T>, matchUntilHalt?: boolean) {
         this.flow = flow;
         this.agenda = flow.agenda;
-        this.matchUntilHalt = !!matchUnitilHalt;
+        this.matchUntilHalt = !!matchUntilHalt;
     }
 
     private onAlter() {
@@ -71,7 +71,7 @@ export class ExecutionStrategy<T> {
         }
     }
 
-    __handleAsyncNext(next: Promise<unknown>): Promise<void> {
+    private __handleAsyncNext(next: Promise<unknown>): Promise<void> {
         return next.then(() => {
             this.looping = false;
             if (this.agenda && !this.agenda.isEmpty()) {

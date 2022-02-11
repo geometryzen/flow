@@ -1,11 +1,14 @@
 {
   "name": "@stemcstudio/flow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Workflow Management",
   "browser": "build/browser/index.js",
   "main": "build/main/index.js",
   "module": "build/module/index.js",
   "types": "build/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint . --ext .ts",
@@ -14,13 +17,13 @@
     "docs": "npm run docs:typedoc && open-cli docs/index.html",
     "docs:typedoc": "trash docs && typedoc --options typedoc.json",
     "pretest": "npm run build",
-    "prepublishOnly": "node check_publish_env.js && npm run build && npm run lint && npm test && npm run docs"
+    "prepublishOnly": "node check_publish_env.js && npm run build && npm run lint && npm test && npm run docs:typedoc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/geometryzen/flow.git"
   },
-  "author": "",
+  "author": "David Geo Holmes",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/geometryzen/flow/issues"

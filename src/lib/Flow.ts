@@ -6,13 +6,16 @@ import { RootNode } from './nodes/RootNode';
 import { Session } from './Session';
 import { WorkingMemory } from './WorkingMemory';
 
+/**
+ * A Flow is a Session.
+ */
 export class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
     agenda: AgendaTree<T>;
     executionStrategy: ExecutionStrategy<T> | undefined;
     rootNode: RootNode<T>;
     workingMemory: WorkingMemory;
     // private __rules: {};
-    constructor(private name: string, private conflictResolutionStrategy: ConflictResolutionStrategy<T>) {
+    constructor(private name: string, private conflictResolutionStrategy: ConflictResolutionStrategy<T, Session<T>>) {
         super();
         this.name = name;
         // this.__rules = {};
@@ -35,6 +38,7 @@ export class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
         return [];
     }
     execute(callback: (reason: unknown, facts: T) => void): Promise<void> {
+        // TODO: If the callback is not called then how does the callee know what happened?
         console.log(`Flow.execute(${typeof callback})`);
         this.executionStrategy = new ExecutionStrategy(this);
         return this.executionStrategy.execute();

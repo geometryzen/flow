@@ -2,6 +2,6 @@ import { ConflictResolutionStrategy } from './ConflictResolutionStrategy';
 import { Rule } from './Rule';
 import { Session } from './Session';
 
-export interface FlowSessionService {
-    createSession<T>(rules: Rule<T>[], conflictResolutionStrategy: ConflictResolutionStrategy<T>, initialFacts: T): Session<T>;
+export interface FlowSessionService<T, S extends Session<T>> {
+    createSession(rules: Rule<T, S>[], conflictResolutionStrategy: ConflictResolutionStrategy<T, S>, facts: T): S;
 }

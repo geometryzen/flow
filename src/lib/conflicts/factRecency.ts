@@ -1,6 +1,13 @@
 import { Match } from '../Match';
+import { Session } from '../Session';
 
-export function factRecency<T>(a: Match<T>, b: Match<T>): number {
+/**
+ * Determines which match wins based upon the recency property of each Match.
+ * @param a 
+ * @param b 
+ * @returns 
+ */
+export function factRecency<T, S extends Session<T>>(a: Match<T, S>, b: Match<T, S>): number {
     let i = 0;
     const aMatchRecency = a.match.recency;
     const bMatchRecency = b.match.recency;

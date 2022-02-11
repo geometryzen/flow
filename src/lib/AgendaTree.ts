@@ -1,8 +1,9 @@
 // import Agenda from './Agenda';
-import { AVLTree } from './trees/AVLTree';
-import { Flow } from './Flow';
-import { EventBus } from './EventBus';
 import { ConflictResolutionStrategy } from './ConflictResolutionStrategy';
+import { EventBus } from './EventBus';
+import { Flow } from './Flow';
+import { Session } from './Session';
+import { AVLTree } from './trees/AVLTree';
 
 const DEFAULT_AGENDA_GROUP = 'main';
 
@@ -10,8 +11,8 @@ export class AgendaTree<T> extends EventBus<AgendaTree<T>> {
     agendaGroups: { [groupName: string]: AVLTree<T> };
     agendaGroupStack: string[];
     // rules: {};
-    comparator: ConflictResolutionStrategy<T>;
-    constructor(private flow: Flow<T>, private conflictResolution: ConflictResolutionStrategy<T>) {
+    comparator: ConflictResolutionStrategy<T, Session<T>>;
+    constructor(private flow: Flow<T>, private conflictResolution: ConflictResolutionStrategy<T, Session<T>>) {
         super();
         this.agendaGroups = {};
         this.agendaGroupStack = [DEFAULT_AGENDA_GROUP];
